@@ -8,6 +8,7 @@ ORG_NAME=$3
 
 WORKSPACE_DATA=$(
     curl \
+        --fail \
         --header "Authorization: Bearer $TF_TOKEN" \
         --header "Content-Type: application/vnd.api+json" \
         "https://app.terraform.io/api/v2/organizations/$ORG_NAME/workspaces/$WORKSPACE_NAME"
@@ -16,6 +17,7 @@ WORKSPACE_ID=$(echo "$WORKSPACE_DATA" | jq -r '.data.id')
 NEW_RUN_DATA="{\"data\": {\"type\": \"runs\", \"relationships\": {\"workspace\": {\"data\": {\"id\": \"$WORKSPACE_ID\"}}}, \"attributes\": {\"message\": \"Automated run from ${GITHUB_REPOSITORY} github action.\"}}}"
 
 curl \
+  --fail \
   --header "Authorization: Bearer $TF_TOKEN" \
   --header "Content-Type: application/vnd.api+json" \
   --request POST \
