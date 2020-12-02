@@ -23,12 +23,26 @@ with:
   org-name: ${{ env.ORG_NAME }}
 ```
 
-## Development
+## Release
 
 ```
 # git add as per usual
 
-git tag -a -m 'Thousands of gyms. Zero contracts.' v1
-git push --follow-tags
+git tag -a -m 'Thousands of gyms. Zero contracts.' v1.1
+git push origin v1.1
 ```
 
+#### Gotcha
+> GitHub actions currently are only resolving to exact versioning. Meaning for a new patch release you'll have to overwrite the current minor release with it.
+
+```
+# This is just for logging purposes, and is not actually used.
+git tag -a -m 'Thousands of gyms. Zero contracts.' v1.2.3
+git push origin v1.2.3
+
+# Version Used by clients
+git tag --delete v1.2
+git push origin --delete v1.2
+git tag -a -m 'Patch release message' v1.2
+git push origin v1.2
+```
